@@ -1,0 +1,67 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Сборка проекта (Coursework)",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+                "-I", "include", "-I", "files",
+                "-Wall", "-O2", "-g",
+                "src/main.c",
+                "src/censAVLtree.c", "src/dictionary.c", "src/logger.c",
+                "files/grid.c", "files/generator.c", "files/display.c",
+                "-o", "crossword_gen.exe"
+            ],
+            "group": { "kind": "build", "isDefault": true },
+            "problemMatcher": "$gcc",
+            "detail": "Компиляция основной программы. Ctrl+Shift+B."
+        },
+        {
+            "label": "Сборка benchmark",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+                "-I", "include", "-I", "files",
+                "-O2", "-g",
+                "tests/benchmark.c",
+                "src/censAVLtree.c", "src/dictionary.c", "src/logger.c",
+                "files/grid.c", "files/generator.c", "files/display.c",
+                "-lm", "-o", "tests/benchmark.exe"
+            ],
+            "problemMatcher": "$gcc",
+            "detail": "Компиляция тестов производительности."
+        },
+        {
+            "label": "Запуск benchmark",
+            "type": "shell",
+            "command": ".\\tests\\benchmark.exe",
+            "args": ["tests\\dict_test.txt"],
+            "dependsOn": "Сборка benchmark",
+            "problemMatcher": [],
+            "presentation": { "reveal": "always", "panel": "new" },
+            "detail": "Собрать и запустить benchmark, результаты → tests/results/"
+        },
+        {
+            "label": "Запуск программы",
+            "type": "shell",
+            "command": ".\\crossword_gen.exe",
+            "args": ["--help"],
+            "dependsOn": "Сборка проекта (Coursework)",
+            "problemMatcher": [],
+            "presentation": { "reveal": "always", "panel": "new" },
+            "detail": "Запуск с флагом --help после сборки."
+        },
+        {
+            "label": "Очистка артефактов",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-Command",
+                "Remove-Item -ErrorAction SilentlyContinue crossword_gen.exe, tests\\benchmark.exe, crossword.log; Get-ChildItem -Filter *.bin | Remove-Item -ErrorAction SilentlyContinue; Get-ChildItem tests\\results -Filter *.csv -ErrorAction SilentlyContinue | Remove-Item"
+            ],
+            "problemMatcher": [],
+            "detail": "Удаление exe, логов, бинарных словарей и CSV."
+        }
+    ]
+}

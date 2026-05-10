@@ -1,0 +1,9 @@
+*.csv
+*.exe
+*.txt
+*.log
+tests\
+*.bin
+*.ipynb
+*.zip
+benchmark_asan
